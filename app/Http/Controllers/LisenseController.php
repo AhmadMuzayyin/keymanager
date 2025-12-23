@@ -121,6 +121,19 @@ class LisenseController extends Controller
             'invalid_reason' => $result['reason'],
             'checked_at' => now(),
         ]);
+        if ($result['valid']) {
+            return response()->json([
+                'status' => true,
+                'message' => 'License is valid',
+                'data' => [
+                    'product_name' => $license->product_name,
+                    'domain' => $license->domain,
+                    'expires_at' => $license->expires_at,
+                    'max_activations' => $license->max_activations,
+                    'status' => $license->status,
+                ],
+            ]);
+        }
 
         return response()->json([
             'status' => $result['valid'],
