@@ -1,6 +1,14 @@
 @props(['type' => 'button'])
 
-<button type="{{ $type }}"
-    {{ $attributes->merge(['class' => 'px-4 py-2 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition duration-150 ease-in-out']) }}>
+<button
+    {{ $attributes->merge([
+        'type' => $type,
+        'class' => 'inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white 
+                       bg-gradient-to-r from-red-500 to-rose-600 rounded-xl shadow-md shadow-red-500/20
+                       hover:from-red-600 hover:to-rose-700 hover:shadow-lg hover:shadow-red-500/30 hover:-translate-y-0.5
+                       focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2
+                       disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0
+                       transition-all duration-200',
+    ]) }}>
     {{ $slot }}
 </button>

@@ -13,7 +13,7 @@ class LisenseController extends Controller
 {
     public function index()
     {
-        $licenses = License::orderBy('created_at', 'desc')->paginate(10);
+        $licenses = License::with('customer')->orderBy('created_at', 'desc')->paginate(10);
 
         return view('license.index', compact('licenses'));
     }
@@ -21,19 +21,30 @@ class LisenseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'customer_id' => 'nullable|exists:customers,id',
             'product' => 'required|string|max:255',
             'domain' => 'nullable|string|max:255',
-            'expires_at' => 'nullable|date',
+            'license_plan' => 'required|in:starter,pro,unlimited,custom',
+            'custom_duration' => 'required_if:license_plan,custom|nullable|integer|min:1',
+            'custom_type' => 'required_if:license_plan,custom|nullable|in:days,months,years',
             'max_activation' => 'required|integer|min:1',
             'status' => 'required|in:active,suspended,revoked',
         ]);
+
+        $expiresAt = $this->calculateExpiresAt(
+            $request->license_plan,
+            $request->custom_duration,
+            $request->custom_type
+        );
+
         try {
             DB::beginTransaction();
             License::create([
+                'customer_id' => $request->customer_id,
                 'key' => (new LicenseService)->generateKey(),
                 'product_name' => $request->product,
                 'domain' => $request->domain,
-                'expires_at' => $request->expires_at,
+                'expires_at' => $expiresAt,
                 'max_activations' => $request->max_activation,
                 'status' => $request->status,
             ]);
@@ -47,21 +58,46 @@ class LisenseController extends Controller
         }
     }
 
+    private function calculateExpiresAt(string $plan, ?int $duration = null, ?string $type = null)
+    {
+        return match ($plan) {
+            'starter' => now()->addYear(),
+            'pro' => now()->addYears(2),
+            'unlimited' => null,
+            'custom' => match ($type) {
+                'days' => now()->addDays($duration),
+                'months' => now()->addMonths($duration),
+                'years' => now()->addYears($duration),
+                default => now()->addMonths($duration),
+            },
+            default => null,
+        };
+    }
+
     public function update(Request $request, License $license)
     {
         $request->validate([
             'product' => 'required|string|max:255',
             'domain' => 'nullable|string|max:255',
-            'expires_at' => 'nullable|date',
+            'license_plan' => 'required|in:starter,pro,unlimited,custom',
+            'custom_duration' => 'nullable|integer|min:1',
+            'custom_type' => 'nullable|in:days,months,years',
             'max_activation' => 'required|integer|min:1',
             'status' => 'required|in:active,suspended,revoked',
         ]);
         try {
             DB::beginTransaction();
+
+            $expiresAt = $this->calculateExpiresAt(
+                $request->license_plan,
+                $request->custom_duration,
+                $request->custom_type
+            );
+
             $license->update([
                 'product_name' => $request->product,
                 'domain' => $request->domain,
-                'expires_at' => $request->expires_at,
+                'expires_at' => $expiresAt,
                 'max_activations' => $request->max_activation,
                 'status' => $request->status,
             ]);

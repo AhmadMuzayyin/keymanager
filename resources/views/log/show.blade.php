@@ -4,246 +4,247 @@
 @section('page-title', 'Detail Log Aktivitas')
 
 @section('content')
-    <div class="mb-4">
-        <a href="{{ route('logs.index') }}" class="inline-flex items-center text-blue-600 hover:text-blue-800">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="space-y-6">
+        {{-- Back Button --}}
+        <a href="{{ route('logs.index') }}"
+            class="inline-flex items-center text-slate-600 hover:text-indigo-600 group transition-colors">
+            <svg class="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
             Kembali ke List
         </a>
-    </div>
 
-    {{-- Summary Card --}}
-    <div class="bg-white rounded-lg shadow-md mb-6">
-        <div class="px-6 py-4 border-b border-gray-200">
-            <h2 class="text-xl font-semibold text-gray-800">Ringkasan Aktivitas</h2>
-        </div>
-        <div class="p-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="bg-blue-50 rounded-lg p-4">
-                    <div class="flex items-center">
-                        <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <div class="ml-4">
-                            <p class="text-sm text-gray-600">IP Address</p>
-                            <p class="text-lg font-semibold text-gray-900">{{ $ip }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-purple-50 rounded-lg p-4">
-                    <div class="flex items-center">
-                        <svg class="w-8 h-8 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                                d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z">
-                            </path>
-                        </svg>
-                        <div class="ml-4">
-                            <p class="text-sm text-gray-600">Total Request</p>
-                            <p class="text-lg font-semibold text-gray-900">{{ $summary->total ?? 0 }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-green-50 rounded-lg p-4">
-                    <div class="flex items-center">
-                        <svg class="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <div class="ml-4">
-                            <p class="text-sm text-gray-600">Valid</p>
-                            <p class="text-lg font-semibold text-gray-900">{{ $summary->valid ?? 0 }}
-                                <span
-                                    class="text-sm text-gray-500">({{ $summary && $summary->total > 0 ? round(($summary->valid / $summary->total) * 100) : 0 }}%)</span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-red-50 rounded-lg p-4">
-                    <div class="flex items-center">
-                        <svg class="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <div class="ml-4">
-                            <p class="text-sm text-gray-600">Invalid</p>
-                            <p class="text-lg font-semibold text-gray-900">{{ $summary->invalid ?? 0 }}
-                                <span
-                                    class="text-sm text-gray-500">({{ $summary && $summary->total > 0 ? round(($summary->invalid / $summary->total) * 100) : 0 }}%)</span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+        {{-- Summary Cards --}}
+        <div class="glass-card overflow-hidden">
+            <div class="px-6 py-5 border-b border-slate-100 bg-gradient-to-r from-indigo-50 to-purple-50">
+                <h2 class="text-lg font-semibold text-slate-800">Ringkasan Aktivitas</h2>
             </div>
-
-            <div class="mt-6 pt-4 border-t border-gray-200">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <p class="text-sm text-gray-600">Domain</p>
-                        <p class="text-base font-medium text-gray-900">{{ $summary->request_domain ?? '-' }}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-600">User Agent</p>
-                        <p class="text-base text-gray-900 truncate" title="{{ $summary->user_agent ?? '-' }}">
-                            {{ $summary->user_agent ?? '-' }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- Request History --}}
-    <div class="bg-white rounded-lg shadow-md">
-        <div class="px-6 py-4 border-b border-gray-200">
-            <div class="flex items-center justify-between">
-                <h2 class="text-xl font-semibold text-gray-800">Riwayat Request</h2>
-                <form method="GET" class="flex space-x-2">
-                    <select name="status"
-                        class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">Semua Status</option>
-                        <option value="valid" {{ request('status') === 'valid' ? 'selected' : '' }}>Valid</option>
-                        <option value="invalid" {{ request('status') === 'invalid' ? 'selected' : '' }}>Invalid</option>
-                    </select>
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                        Filter
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <div class="divide-y divide-gray-200">
-            @forelse($logs ?? [] as $log)
-                <div class="p-6 hover:bg-gray-50 transition-colors">
-                    <div class="flex items-start justify-between">
-                        <div class="flex-1">
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="flex items-center space-x-3">
-                                    @if ($log->status === 'valid')
-                                        <span
-                                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800">
-                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd"
-                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                                    clip-rule="evenodd"></path>
-                                            </svg>
-                                            VALID
-                                        </span>
-                                    @else
-                                        <span
-                                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-800">
-                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd"
-                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                                    clip-rule="evenodd"></path>
-                                            </svg>
-                                            INVALID
-                                        </span>
-                                    @endif
-                                    <span class="text-sm text-gray-500">
-                                        {{ date('d M Y H:i:s', strtotime($log->checked_at)) }}
-                                    </span>
-                                </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {{-- IP Address --}}
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-5 border border-blue-100">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9">
+                                    </path>
+                                </svg>
                             </div>
+                            <div>
+                                <p class="text-sm text-slate-500">IP Address</p>
+                                <p class="text-lg font-bold text-slate-800 font-mono">{{ $ip }}</p>
+                            </div>
+                        </div>
+                    </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                                <div>
-                                    <p class="text-gray-600">License Key</p>
-                                    <code
-                                        class="text-gray-900 bg-gray-100 px-2 py-1 rounded">{{ $log->license_key }}</code>
-                                </div>
-                                <div>
-                                    <p class="text-gray-600">Produk</p>
-                                    <p class="text-gray-900 font-medium">{{ $log->license_product_name ?? 'N/A' }}</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-600">Status Lisensi</p>
-                                    @if ($log->license_status === 'active')
-                                        <span
-                                            class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                                            Aktif
-                                        </span>
-                                    @elseif($log->license_status === 'suspended')
-                                        <span
-                                            class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                            Suspended
-                                        </span>
-                                    @else
-                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
-                                            {{ $log->license_status ?? 'Unknown' }}
-                                        </span>
-                                    @endif
-                                </div>
-                                <div>
-                                    <p class="text-gray-600">Domain Terdaftar</p>
-                                    <p class="text-gray-900">{{ $log->license_domain ?? 'Universal' }}</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-600">Expired</p>
-                                    <p class="text-gray-900">
-                                        {{ $log->license_expires_at ? date('d M Y', strtotime($log->license_expires_at)) : 'Lifetime' }}
-                                    </p>
-                                </div>
-                                @if ($log->status === 'invalid' && $log->invalid_reason)
-                                    <div>
-                                        <p class="text-gray-600">Alasan Invalid</p>
-                                        <p class="text-red-600 font-medium">
-                                            @switch($log->invalid_reason)
-                                                @case('license_not_found')
-                                                    Lisensi tidak ditemukan
-                                                @break
+                    {{-- Total Request --}}
+                    <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-5 border border-purple-100">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-500">Total Request</p>
+                                <p class="text-2xl font-bold text-slate-800">{{ $summary->total ?? 0 }}</p>
+                            </div>
+                        </div>
+                    </div>
 
-                                                @case('license_expired')
-                                                    Lisensi sudah expired
-                                                @break
+                    {{-- Valid --}}
+                    <div class="bg-gradient-to-br from-emerald-50 to-green-50 rounded-2xl p-5 border border-emerald-100">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-500">Valid</p>
+                                <p class="text-2xl font-bold text-emerald-600">{{ $summary->valid ?? 0 }}
+                                    <span
+                                        class="text-sm font-normal text-slate-500">({{ $summary && $summary->total > 0 ? round(($summary->valid / $summary->total) * 100) : 0 }}%)</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
-                                                @case('license_suspended')
-                                                    Lisensi di-suspend
-                                                @break
+                    {{-- Invalid --}}
+                    <div class="bg-gradient-to-br from-red-50 to-rose-50 rounded-2xl p-5 border border-red-100">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 bg-gradient-to-br from-red-500 to-rose-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-500/20">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-500">Invalid</p>
+                                <p class="text-2xl font-bold text-red-600">{{ $summary->invalid ?? 0 }}
+                                    <span
+                                        class="text-sm font-normal text-slate-500">({{ $summary && $summary->total > 0 ? round(($summary->invalid / $summary->total) * 100) : 0 }}%)</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                                                @case('license_revoked')
-                                                    Lisensi dicabut
-                                                @break
+                <div class="mt-6 pt-6 border-t border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 rounded-xl p-4">
+                        <p class="text-sm text-slate-500 mb-1">Domain</p>
+                        <p class="text-base font-semibold text-slate-800">{{ $summary->request_domain ?? '-' }}</p>
+                    </div>
+                    <div class="bg-slate-50 rounded-xl p-4">
+                        <p class="text-sm text-slate-500 mb-1">User Agent</p>
+                        <p class="text-sm text-slate-700 truncate" title="{{ $summary->user_agent ?? '-' }}">
+                            {{ $summary->user_agent ?? '-' }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                                                @case('domain_mismatch')
-                                                    Domain tidak sesuai
-                                                @break
+        {{-- Request History --}}
+        <div class="glass-card overflow-hidden">
+            <div class="px-6 py-5 border-b border-slate-100">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <h2 class="text-lg font-semibold text-slate-800">Riwayat Request</h2>
+                    <form method="GET" class="flex gap-3">
+                        <input type="hidden" name="ip" value="{{ $ip }}">
+                        <select name="status"
+                            class="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
+                            <option value="">Semua Status</option>
+                            <option value="valid" {{ request('status') === 'valid' ? 'selected' : '' }}>Valid</option>
+                            <option value="invalid" {{ request('status') === 'invalid' ? 'selected' : '' }}>Invalid
+                            </option>
+                        </select>
+                        <x-button-secondary type="submit">
+                            Filter
+                        </x-button-secondary>
+                    </form>
+                </div>
+            </div>
 
-                                                @default
-                                                    {{ $log->invalid_reason }}
-                                            @endswitch
-                                        </p>
+            <div class="divide-y divide-slate-100">
+                @forelse($logs ?? [] as $log)
+                    <div class="p-6 hover:bg-slate-50/50 transition-colors">
+                        <div class="flex items-start gap-4">
+                            {{-- Status Icon --}}
+                            <div class="flex-shrink-0">
+                                @if ($log->status === 'valid')
+                                    <div
+                                        class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center shadow-md shadow-emerald-500/20">
+                                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </div>
+                                @else
+                                    <div
+                                        class="w-10 h-10 bg-gradient-to-br from-red-500 to-rose-600 rounded-xl flex items-center justify-center shadow-md shadow-red-500/20">
+                                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
                                     </div>
                                 @endif
                             </div>
 
-                            <button type="button"
-                                @click.prevent="$dispatch('open-modal', 'view-log-{{ $log->id }}')"
-                                class="mt-3 text-sm text-blue-600 hover:text-blue-800">
-                                Lihat Detail Lengkap →
-                            </button>
+                            {{-- Content --}}
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="flex items-center gap-3">
+                                        @if ($log->status === 'valid')
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-100 text-emerald-700">
+                                                VALID
+                                            </span>
+                                        @else
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-red-100 text-red-700">
+                                                INVALID
+                                            </span>
+                                        @endif
+                                        <span class="text-sm text-slate-500">
+                                            {{ date('d M Y H:i:s', strtotime($log->checked_at)) }}
+                                        </span>
+                                    </div>
+                                    <button type="button"
+                                        @click="$dispatch('open-modal', 'view-log-{{ $log->id }}')"
+                                        class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">
+                                        Detail
+                                    </button>
+                                </div>
+
+                                {{-- License Info --}}
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div class="bg-slate-50 rounded-xl p-3">
+                                        <p class="text-xs text-slate-500 mb-1">License Key</p>
+                                        <code
+                                            class="text-xs font-mono text-slate-700">{{ Str::limit($log->license_key, 20) }}</code>
+                                    </div>
+                                    <div class="bg-slate-50 rounded-xl p-3">
+                                        <p class="text-xs text-slate-500 mb-1">Produk</p>
+                                        <p class="text-sm font-medium text-slate-700">
+                                            {{ $log->license_product_name ?? '-' }}</p>
+                                    </div>
+                                    <div class="bg-slate-50 rounded-xl p-3">
+                                        <p class="text-xs text-slate-500 mb-1">Domain Request</p>
+                                        <p class="text-sm text-slate-700">{{ $log->request_domain ?? '-' }}</p>
+                                    </div>
+                                    <div class="bg-slate-50 rounded-xl p-3">
+                                        <p class="text-xs text-slate-500 mb-1">Status Lisensi</p>
+                                        <p class="text-sm text-slate-700">{{ $log->license_status ?? '-' }}</p>
+                                    </div>
+                                </div>
+
+                                @if ($log->status === 'invalid' && $log->invalid_reason)
+                                    <div class="mt-3 p-3 bg-red-50 border border-red-100 rounded-xl">
+                                        <p class="text-sm text-red-600">
+                                            <span class="font-medium">Alasan:</span> {{ $log->invalid_reason }}
+                                        </p>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                @include('log.partials.view-modal')
+                    {{-- View Modal --}}
+                    @include('log.partials.view-modal', ['log' => $log])
                 @empty
-                    <div class="px-6 py-12 text-center text-gray-500">
-                        Tidak ada log untuk IP ini.
+                    <div class="p-16 text-center">
+                        <div class="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                </path>
+                            </svg>
+                        </div>
+                        <p class="text-slate-500 text-lg font-medium">Tidak ada riwayat request</p>
                     </div>
                 @endforelse
             </div>
 
             @if (isset($logs) && $logs->hasPages())
-                <div class="px-6 py-4 border-t border-gray-200">
-                    {{ $logs->links() }}
+                <div class="px-6 py-4 border-t border-slate-100 bg-slate-50/50">
+                    {{ $logs->appends(['ip' => $ip])->links() }}
                 </div>
             @endif
         </div>
-    @endsection
+    </div>
+@endsection
